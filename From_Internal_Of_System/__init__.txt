@@ -1,0 +1,2 @@
+*** Settings ***
+Documentation     will use "Client of Kafka" for simulating to send message
