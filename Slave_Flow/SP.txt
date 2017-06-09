@@ -1,0 +1,30 @@
+*** Settings ***
+Resource          ../Resources/config.txt
+
+*** Keywords ***
+Login_Success_Flow
+    [Arguments]    ${username}    ${password}
+    ${curl}    ${sp_address}    curl_login_SP    ${login_url}    ${1}    ${1}    ${username}
+    ...    ${password}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+    [Return]    ${appToken}    ${sp_address}
+
+CreateStream_Flow
+    [Arguments]    ${username}    ${password}    ${streamtype}    ${streamproperty}
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    ${username}    ${password}
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${streamtype}    ${streamproperty}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoken}    get from dictionary    ${stream}    streamPublishToken
+    ${streamsubtoken}    get from dictionary    ${stream}    streamSubscribeToken
+    [Return]    ${streamid}    ${apptoken}    ${streampubtoken}    ${streamsubtoken}

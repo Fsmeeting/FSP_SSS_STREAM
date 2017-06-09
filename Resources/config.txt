@@ -1,0 +1,33 @@
+*** Settings ***
+Documentation     for loading "Library" "User Keywords which in the resource of 'Case Business' or 'Flow Business'" and define variable
+Library           OperatingSystem
+Library           redis
+Library           DatabaseLibrary
+Library           RequestsLibrary
+Library           String
+Library           Collections
+Resource          ../Slave_Flow/Curl_Data_Url.txt
+Resource          ../Slave_Flow/Access.txt
+Resource          ../Slave_Flow/SP.txt
+Library           Process
+Library           client_sdk
+Library           Hession
+
+*** Variables ***
+${mysql_db_mod}    pymysql
+${mysql_db_name}    fsp_sss_stream
+${mysql_db_user}    root
+${mysql_db_password}    123456
+${mysql_db_ip}    192.168.7.70
+${mysql_db_port}    3306
+${redis_url}      redis://:just-do-it@192.168.7.105
+${get_proxies_url}    api/v1.0/get_proxies
+${login_url}      api/v1.0/login
+${logout_url}     api/v1.0/logout
+${CreateStream_url}    api/v1.0/create_stream
+${DestroyStream}    api/v1.0/destroy_stream
+${curl_access_data}    curl -H "Content-Type: application/json;charset=UTF-8" -s -k --data '{"exceptionProxies":["aaa","bbb","ccc"],"proxyType":0,"requestType":1,"sequence":0}'
+${access_address}    http://192.168.7.108:8080
+${curl_http}      curl -H "Content-Type: application/json;charset=UTF-8" -s -k --data
+${curl_http2}     curl -H "Content-Type: application/json;charset=UTF-8" --http2 -s -k --data
+${clientproxy_addr}    192.168.7.73:54321

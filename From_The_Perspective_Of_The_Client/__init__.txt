@@ -1,0 +1,2 @@
+*** Settings ***
+Documentation     Mainly, test for those modules can be accessed directly by client, for example, \ AS CP SS SP Access and Scenario Test

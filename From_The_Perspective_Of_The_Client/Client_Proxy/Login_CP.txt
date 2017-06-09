@@ -1,0 +1,28 @@
+*** Settings ***
+Documentation     目前token 的规则是1；字符串
+...               所以符合该规则的就是有效的token，否则为无效
+...
+...               刚刚和Allen 讨论，由于开发他们的异常处理还没有开始编写，所以目前只要跑通就行了，不用去校验
+Force Tags        CP
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+valid token
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;xxx
+    ${a}    login    ${cp_addr}    ${client_token}
+
+invalid token
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    dftrf
+    ${a}    login    ${cp_addr}    ${client_token}
+    log    ${a}
+
+empty token
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    ${EMPTY}
+    ${a}    login    ${cp_addr}    ${client_token}
+    log    ${a}

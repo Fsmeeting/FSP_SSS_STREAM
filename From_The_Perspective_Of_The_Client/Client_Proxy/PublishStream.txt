@@ -1,0 +1,107 @@
+*** Settings ***
+Force Tags        CP
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+PublishStream_Success
+    [Tags]    smoke
+    ${streamid}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${streamid}    ${streampubtoken}
+
+empty stream_id and empty stream_publish_token
+    ${streamid}    set variable    ${EMPTY}
+    ${streampubtoken}    set variable    ${EMPTY}
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${streamid}    ${streampubtoken}
+
+empty stream_id and invalid stream_publish_token
+    ${streamid}    set variable    ${EMPTY}
+    ${streampubtoken}    set variable    invalid_publish-token
+    ${byte_streampubtoken}    encode string to bytes    ${streampubtoken}    UTF-8
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${streamid}    ${byte_streampubtoken}
+
+empty stream_id and valid stream_publish_token
+    ${streamid}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    ${emptystreamid}    set variable    ${EMPTY}
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${emptystreamid}    ${streampubtoken}
+
+invalid stream_id and empty stream_publish_token
+    ${streamid}    set variable    invalid_stream_id
+    ${byte_invalid_streamid}    encode string to bytes    ${streamid}    UTF-8
+    ${streampubtoken}    set variable    ${EMPTY}
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${byte_invalid_streamid}    ${streampubtoken}
+
+invalid stream_id and invalid stream_publish_token
+    ${streamid}    set variable    invalid_stream_id
+    ${byte_invalid_streamid}    encode string to bytes    ${streamid}    UTF-8
+    ${streampubtoken}    set variable    invalid_pubtoken
+    ${byte_streampubtoken}    encode string to bytes    ${streampubtoken}    UTF-8
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${byte_invalid_streamid}    ${streampubtoken}
+
+invalid stream_id and valid stream_publish_token
+    ${streamid}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    ${emptystreamid}    set variable    ${EMPTY}
+    ${streamid}    set variable    invalid_stream_id
+    ${byte_invalid_streamid}    encode string to bytes    ${streamid}    UTF-8
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${byte_invalid_streamid}    ${streampubtoken}
+
+valid stream_id and empty stream_publish_token
+    ${streamid}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    ${streampubtoken}    set variable    ${EMPTY}
+    ${byte_streampubtoken}    encode string to bytes    ${streampubtoken}    UTF-8
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${streamid}    ${streampubtoken}
+
+valid stream_id and invalid stream_publish_token
+    ${streamid}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    ${streampubtoken}    set variable    invalid_stream_publish_token
+    ${byte_streampubtoken}    encode string to bytes    ${streampubtoken}    UTF-8
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${streamid}    ${streampubtoken}
+
+valid stream_id and valid stream_publish_token
+    ${streamid}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    init
+    ${cp_addr}    set variable    ${clientproxy_addr}
+    ${client_token}    set variable    1;test
+    ${a}    login    ${cp_addr}    ${client_token}
+    ${b}    Publish Audio    ${streamid}    ${streampubtoken}

@@ -1,0 +1,105 @@
+*** Settings ***
+Resource          ../Resources/config.txt
+
+*** Keywords ***
+curl_get_proxies
+    [Arguments]    ${access_addr}    ${proxy_url}    ${exception}    ${proType}    ${reqType}    ${seq}
+    ${curl_url}    join path    ${access_addr}    ${proxy_url}
+    ${exception_key}    set variable    exceptionProxies
+    ${bytes_exception_key}    encode string to bytes    ${exception_key}    UTF-8
+    ${proxytype_key}    set variable    proxyType
+    ${bytes_proxytype_key}    encode string to bytes    ${proxytype_key}    UTF-8
+    ${requesttype_key}    set variable    requestType
+    ${bytes_requesttype_key}    encode string to bytes    ${requesttype_key}    UTF-8
+    ${sequence_key}    set variable    sequence
+    ${bytes_sequence_key}    encode string to bytes    ${sequence_key}    UTF-8
+    ${data}    create dictionary    ${bytes_exception_key}=${exception}    ${bytes_proxytype_key}=${proType}    ${bytes_requesttype_key}=${reqType}    ${bytes_sequence_key}=${seq}
+    ${data_json}    dic_to_json    ${data}
+    ${curl_data}    set variable    ${curl_http}${SPACE}'${data_json}'${SPACE}${curl_url}
+    [Return]    ${curl_data}
+
+curl_login_SP
+    [Arguments]    ${url}    ${seq}    ${reqType}    ${ID}    ${Code}
+    @{sp_address}    Get_Proxies_Flow    ${0}
+    ${sp_url}    join path    @{sp_address}[1]    ${url}
+    ${sequence_key}    set variable    sequence
+    ${bytes_sequence_key}    encode string to bytes    ${sequence_key}    UTF-8
+    ${requesttype_key}    set variable    requestType
+    ${bytes_requesttype_key}    encode string to bytes    ${requesttype_key}    UTF-8
+    ${app_ID_key}    set variable    appID
+    ${bytes_app_ID_key}    encode string to bytes    ${app_ID_key}    UTF-8
+    ${app_ID_value}    set variable    ${ID}
+    ${bytes_app_ID_value}    encode string to bytes    ${app_ID_value}    UTF-8
+    ${verificationcode_key}    set variable    verificationCode
+    ${bytes_verificationcode_key}    encode string to bytes    ${verificationcode_key}    UTF-8
+    ${verificationcode_value}    set variable    ${Code}
+    ${bytes_verificationcode_value}    encode string to bytes    ${verificationcode_value}    UTF-8
+    ${data}    create dictionary    ${bytes_sequence_key}=${seq}    ${bytes_requesttype_key}=${reqType}    ${bytes_app_ID_key}=${bytes_app_ID_value}    ${bytes_verificationcode_key}=${bytes_verificationcode_value}
+    ${data_json}    dic to json    ${data}
+    ${curl_data}    set variable    ${curl_http2}${SPACE}'${data_json}'${SPACE}${sp_url}
+    [Return]    ${curl_data}    @{sp_address}[1]
+
+curl_logout_SP
+    [Arguments]    ${username}    ${password}    ${seq}    ${reqType}
+    ${apptoken}    ${sp_address}    Login_Success_Flow    ${username}    ${password}
+    ${sp_url}    join path    ${sp_address}    ${logout_url}
+    ${sequence_key}    set variable    sequence
+    ${bytes_sequence_key}    encode string to bytes    ${sequence_key}    UTF-8
+    ${requesttype_key}    set variable    requestType
+    ${bytes_requesttype_key}    encode string to bytes    ${requesttype_key}    UTF-8
+    ${apptoken_key}    set variable    appToken
+    ${bytes_apptoken_key}    encode string to bytes    ${apptoken_key}    UTF-8
+    ${apptoken_value}    set variable    ${apptoken}
+    ${bytes_apptoken_value}    encode string to bytes    ${apptoken_value}    UTF-8
+    ${data}    create dictionary    ${bytes_sequence_key}=${seq}    ${bytes_requesttype_key}=${reqType}    ${bytes_apptoken_key}=${bytes_apptoken_value}
+    ${data_json}    dic to json    ${data}
+    ${curl_data}    set variable    ${curl_http2}${SPACE}'${data_json}'${SPACE}${sp_url}
+    [Return]    ${curl_data}    ${apptoken}
+
+curl_createstream
+    [Arguments]    ${seq}    ${reqType}    ${sType}    ${sProperty}    ${Token}    @{sp_addr}
+    ${sp_address}    set variable    @{sp_addr}[0]
+    ${sp_address1}    set variable    @{sp_addr}[1]
+    ${curl_url}    join path    ${sp_address}    ${CreateStream_url}
+    ${curl_url1}    join path    ${sp_address1}    ${CreateStream_url}
+    ${sequence_key}    set variable    sequence
+    ${bytes_sequence_key}    encode string to bytes    ${sequence_key}    UTF-8
+    ${requesttype_key}    set variable    requestType
+    ${bytes_requesttype_key}    encode string to bytes    ${requesttype_key}    UTF-8
+    ${streamtype_key}    set variable    streamType
+    ${bytes_streamtype_key}    encode string to bytes    ${streamtype_key}    UTF-8
+    ${streamproperty_key}    set variable    streamProperty
+    ${bytes_streamproperty_key}    encode string to bytes    ${streamproperty_key}    UTF-8
+    ${apptoken_key}    set variable    appToken
+    ${bytes_apptoken_key}    encode string to bytes    ${apptoken_key}    UTF-8
+    ${apptoken_value}    set variable    ${Token}
+    ${bytes_apptoken_value}    encode string to bytes    ${apptoken_value}    UTF-8
+    ${data}    create dictionary    ${bytes_sequence_key}=${seq}    ${bytes_requesttype_key}=${reqType}    ${bytes_streamtype_key}=${sType}    ${bytes_streamproperty_key}=${sProperty}    ${bytes_apptoken_key}=${bytes_apptoken_value}
+    ${data_json}    dic to json    ${data}
+    ${curl_data}    set variable    ${curl_http2}${SPACE}'${data_json}'${SPACE}${curl_url}
+    ${curl_data1}    set variable    ${curl_http2}${SPACE}'${data_json}'${SPACE}${curl_url1}
+    [Return]    ${curl_data}    ${curl_data1}
+
+curl_destroystream
+    [Arguments]    ${seq}    ${reqType}    ${sID}    ${Token}    @{sp_addr}
+    ${sp_address}    set variable    @{sp_addr}[0]
+    ${sp_address1}    set variable    @{sp_addr}[1]
+    ${curl_url}    join path    ${sp_address}    ${DestroyStream}
+    ${curl_url1}    join path    ${sp_address1}    ${DestroyStream}
+    ${sequence_key}    set variable    sequence
+    ${bytes_sequence_key}    encode string to bytes    ${sequence_key}    UTF-8
+    ${requesttype_key}    set variable    requestType
+    ${bytes_requesttype_key}    encode string to bytes    ${requesttype_key}    UTF-8
+    ${streamid_key}    set variable    streamID
+    ${bytes_streamid_key}    encode string to bytes    ${streamid_key}    UTF-8
+    ${streamid_value}    set variable    ${sID}
+    ${bytes_streamid_value}    encode string to bytes    ${streamid_value}    UTF-8
+    ${apptoken_key}    set variable    appToken
+    ${bytes_apptoken_key}    encode string to bytes    ${apptoken_key}    UTF-8
+    ${apptoken_value}    set variable    ${Token}
+    ${bytes_apptoken_value}    encode string to bytes    ${apptoken_value}    UTF-8
+    ${data}    create dictionary    ${bytes_sequence_key}=${seq}    ${bytes_requesttype_key}=${reqType}    ${bytes_streamid_key}=${bytes_streamid_value}    ${bytes_apptoken_key}=${bytes_apptoken_value}
+    ${data_json}    dic to json    ${data}
+    ${curl_data}    set variable    ${curl_http2}${SPACE}'${data_json}'${SPACE}${curl_url}
+    ${curl_data1}    set variable    ${curl_http2}${SPACE}'${data_json}'${SPACE}${curl_url1}
+    [Return]    ${curl_data}    ${curl_data1}

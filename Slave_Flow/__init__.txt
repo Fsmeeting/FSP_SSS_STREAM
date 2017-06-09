@@ -1,0 +1,2 @@
+*** Settings ***
+Documentation     User Keyword for secondary step in a test case

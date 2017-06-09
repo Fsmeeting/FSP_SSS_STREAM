@@ -1,0 +1,23 @@
+*** Settings ***
+Force Tags        Access
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+Get_Proxies
+    [Tags]    smoke
+    ${exception_value1}    set variable    aaa
+    ${bytes_exception_value1}    encode string to bytes    ${exception_value1}    UTF-8
+    ${exception_value2}    set variable    bbb
+    ${bytes_exception_value2}    encode string to bytes    ${exception_value2}    UTF-8
+    @{exceptions}    create list    ${bytes_exception_value1}    ${bytes_exception_value2}
+    ${curl}    curl_get_proxies    ${access_address}    ${get_proxies_url}    ${exceptions}    ${1}    ${1}
+    ...    ${0}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${proxies}    get from dictionary    ${responsedata}    proxies
+    log    ${proxies[0]}
+    ${cp_ip}    get from dictionary    ${proxies[0]}    addr
+    ${cp_port}    get from dictionary    ${proxies[0]}    port
+    ${cp_addr}    set variable    https://${cp_ip}${:}${cp_port}

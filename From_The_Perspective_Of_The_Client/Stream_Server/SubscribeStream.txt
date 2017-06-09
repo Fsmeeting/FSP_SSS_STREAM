@@ -1,0 +1,16 @@
+*** Settings ***
+Documentation     1. firstly, CreateStream(video,audio;reliable,unreliable)
+Force Tags        SS
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+test
+    [Tags]    smoke
+    ${streamid}    ${apptoken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_Flow    app123    vc123
+    ...    ${1}    ${1}
+    ${filepath}    set variable    /usr/lib/python2.7/site-packages/client_sdk/
+    ${a}    run process    /usr/lib/python2.7/site-packages/client_sdk/subscribe_stream_audio.py    ${clientproxy_addr}    ${streamid}    ${streampubtoken}    ${streamsubtoken}
+    ...    cwd=${filepath}
+    log    ${a.stdout}
+    log    ${a.rc}
+    run keyword if    ${a.rc}!=0    fail

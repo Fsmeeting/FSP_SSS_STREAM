@@ -1,0 +1,26 @@
+*** Settings ***
+Resource          ../Resources/config.txt
+
+*** Keywords ***
+Get_Proxies_Flow
+    [Arguments]    ${proxytype}
+    ${exception_value1}    set variable    aaa
+    ${bytes_exception_value1}    encode string to bytes    ${exception_value1}    UTF-8
+    ${exception_value2}    set variable    bbb
+    ${bytes_exception_value2}    encode string to bytes    ${exception_value2}    UTF-8
+    @{exceptions}    create list    ${bytes_exception_value1}    ${bytes_exception_value2}
+    ${curl}    curl_get_proxies    ${access_address}    ${get_proxies_url}    ${exceptions}    ${proxytype}    ${1}
+    ...    ${0}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${proxies}    get from dictionary    ${responsedata}    proxies
+    Comment    log    ${proxies[0]}
+    ${sp_ip}    get from dictionary    ${proxies[0]}    addr
+    ${sp_port}    get from dictionary    ${proxies[0]}    port
+    ${sp_addr}    set variable    https://${sp_ip}${:}${sp_port}
+    ${sp_ip1}    get from dictionary    ${proxies[1]}    addr
+    ${sp_port1}    get from dictionary    ${proxies[1]}    port
+    ${sp_addr1}    set variable    https://${sp_ip1}${:}${sp_port1}
+    [Return]    ${sp_addr}    ${sp_addr1}

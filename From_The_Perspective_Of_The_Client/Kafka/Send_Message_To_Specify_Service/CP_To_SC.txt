@@ -1,0 +1,88 @@
+*** Settings ***
+Documentation     在这里里举ClientConnected 接口为例子
+Resource          ../../../Resources/config.txt
+
+*** Test Cases ***
+valid topic and empty instance_id
+    ${sequence}    set variable    ${1}
+    ${topicName}    set variable    sc_instance103
+    ${byte_topicName}    encode string to bytes    ${topicName}    UTF-8
+    ${client_id}    set variable    client_id04
+    ${byte_client_id}    encode string to bytes    ${client_id}    UTF-8
+    ${instance_id}    set variable    ${EMPTY}
+    ${byte_instance_id}    encode string to bytes    ${instance_id}    UTF-8
+    ${app_id}    set variable    app_id_2
+    ${byte_app_id}    encode string to bytes    ${app_id}    UTF-8
+    ${client_name}    set variable    albert_client
+    ${byte_client_name}    encode string to bytes    ${client_name}    UTF-8
+    ${responceTopic}    set variable    cp_test1
+    ${byte_responceTopic}    encode string to bytes    ${responceTopic}    UTF-8
+    ${kafkacluster}    set variable    192.168.7.63:9092,192.168.7.64:9092,192.168.7.65:9092
+    ${byte_kafkacluster}    encode string to bytes    ${kafkacluster}    UTF-8
+    ${result}    QueryDB_clientConnected    ${sequence}    ${byte_topicName}    ${byte_client_id}    ${byte_instance_id}    ${byte_app_id}
+    ...    ${byte_client_name}    ${byte_responceTopic}
+    log    ${result}
+    run keyword if    ${result}!=True    fail
+
+invalid topic and valid instance_id
+    ${sequence}    set variable    ${1}
+    ${topicName}    set variable    sc_instance103_wrong
+    ${byte_topicName}    encode string to bytes    ${topicName}    UTF-8
+    ${client_id}    set variable    client_id04
+    ${byte_client_id}    encode string to bytes    ${client_id}    UTF-8
+    ${instance_id}    set variable    cp_service_2
+    ${byte_instance_id}    encode string to bytes    ${instance_id}    UTF-8
+    ${app_id}    set variable    app_id_2
+    ${byte_app_id}    encode string to bytes    ${app_id}    UTF-8
+    ${client_name}    set variable    albert_client
+    ${byte_client_name}    encode string to bytes    ${client_name}    UTF-8
+    ${responceTopic}    set variable    cp_test1
+    ${byte_responceTopic}    encode string to bytes    ${responceTopic}    UTF-8
+    ${kafkacluster}    set variable    192.168.7.63:9092,192.168.7.64:9092,192.168.7.65:9092
+    ${byte_kafkacluster}    encode string to bytes    ${kafkacluster}    UTF-8
+    ${result}    QueryDB_clientConnected    ${sequence}    ${byte_topicName}    ${byte_client_id}    ${byte_instance_id}    ${byte_app_id}
+    ...    ${byte_client_name}    ${byte_responceTopic}
+    log    ${result}
+    run keyword if    ${result}!=False    fail
+
+valid topic and invalid instance_id
+    ${sequence}    set variable    ${1}
+    ${topicName}    set variable    sc_instance103
+    ${byte_topicName}    encode string to bytes    ${topicName}    UTF-8
+    ${client_id}    set variable    client_id04
+    ${byte_client_id}    encode string to bytes    ${client_id}    UTF-8
+    ${instance_id}    set variable    cp_service_2_invalid
+    ${byte_instance_id}    encode string to bytes    ${instance_id}    UTF-8
+    ${app_id}    set variable    app_id_2
+    ${byte_app_id}    encode string to bytes    ${app_id}    UTF-8
+    ${client_name}    set variable    albert_client
+    ${byte_client_name}    encode string to bytes    ${client_name}    UTF-8
+    ${responceTopic}    set variable    cp_test1
+    ${byte_responceTopic}    encode string to bytes    ${responceTopic}    UTF-8
+    ${kafkacluster}    set variable    192.168.7.63:9092,192.168.7.64:9092,192.168.7.65:9092
+    ${byte_kafkacluster}    encode string to bytes    ${kafkacluster}    UTF-8
+    ${result}    QueryDB_clientConnected    ${sequence}    ${byte_topicName}    ${byte_client_id}    ${byte_instance_id}    ${byte_app_id}
+    ...    ${byte_client_name}    ${byte_responceTopic}
+    log    ${result}
+    run keyword if    ${result}!=False    fail
+
+valid topic and valid instance_id
+    ${sequence}    set variable    ${1}
+    ${topicName}    set variable    sc_instance103
+    ${byte_topicName}    encode string to bytes    ${topicName}    UTF-8
+    ${client_id}    set variable    client_id04
+    ${byte_client_id}    encode string to bytes    ${client_id}    UTF-8
+    ${instance_id}    set variable    cp_service_2
+    ${byte_instance_id}    encode string to bytes    ${instance_id}    UTF-8
+    ${app_id}    set variable    app_id_2
+    ${byte_app_id}    encode string to bytes    ${app_id}    UTF-8
+    ${client_name}    set variable    albert_client
+    ${byte_client_name}    encode string to bytes    ${client_name}    UTF-8
+    ${responceTopic}    set variable    cp_test1
+    ${byte_responceTopic}    encode string to bytes    ${responceTopic}    UTF-8
+    ${kafkacluster}    set variable    192.168.7.63:9092,192.168.7.64:9092,192.168.7.65:9092
+    ${byte_kafkacluster}    encode string to bytes    ${kafkacluster}    UTF-8
+    ${result}    QueryDB_clientConnected    ${sequence}    ${byte_topicName}    ${byte_client_id}    ${byte_instance_id}    ${byte_app_id}
+    ...    ${byte_client_name}    ${byte_responceTopic}
+    log    ${result}
+    run keyword if    ${result}!=True    fail

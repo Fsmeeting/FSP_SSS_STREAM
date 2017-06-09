@@ -1,0 +1,174 @@
+*** Settings ***
+Force Tags        SP
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+CreateStream_audio_unreliable
+    [Tags]    smoke
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_vedio and stream_property_reliable and app_token_empty
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_vedio and stream_property_unreliable and app_token_invalid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_vedio and stream_property_empty and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_audio and stream_property_invalid and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_desktop and stream_property_reliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_empty and stream_property_unreliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_invalid and stream_property_reliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_desktopand stream_property_unreliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_video and stream_property_reliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_video and stream_property_unreliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_audio and stream_property_reliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken
+
+stream_type_audio and stream_property_unreliable and app_token_valid
+    ${apptoken}    ${sp_addr}    Login_Success_Flow    app123    vc123
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_createstream    ${1}    ${1}    ${1}    ${1}    ${apptoken}
+    ...    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${stream}    get from dictionary    ${responsedata}    stream
+    ${streamid}    get from dictionary    ${stream}    streamID
+    ${streampubtoekn}    get from dictionary    ${stream}    streamPublishToken

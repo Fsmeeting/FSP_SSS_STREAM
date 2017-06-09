@@ -1,0 +1,2 @@
+*** Settings ***
+Documentation     for loading "Library" "User Keywords which in the resource of 'Case Business' or 'Flow Business'" and define variable

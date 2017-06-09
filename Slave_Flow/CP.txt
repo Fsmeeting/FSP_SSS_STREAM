@@ -1,0 +1,10 @@
+*** Settings ***
+Resource          ../Resources/config.txt
+
+*** Keywords ***
+Login_CP_Flow
+    [Arguments]    ${cp_addr}    ${client_token}
+    init
+    Comment    ${cp_addr}    set variable    ${clientproxy_addr}
+    Comment    ${client_token}    set variable    1;xxx
+    ${a}    login    ${cp_addr}    ${client_token}

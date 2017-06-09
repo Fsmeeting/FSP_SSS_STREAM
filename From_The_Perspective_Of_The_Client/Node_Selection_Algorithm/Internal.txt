@@ -1,0 +1,12 @@
+*** Settings ***
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+Specific IP
+    ${url}    set variable    192.168.7.71
+    ${byte_rul}    encode string to bytes    ${url}    UTF-8
+    ${clientip}    set variable    1.0.1.1
+    ${byte_clientip}    encode string to bytes    ${clientip}    UTF-8
+    ${service_type}    set variable    gs
+    ${byte_service_type}    encode string to bytes    ${service_type}    UTF-8
+    get_instance    ${byte_rul}    ${byte_clientip}    ${byte_service_type}

@@ -1,0 +1,22 @@
+*** Settings ***
+Force Tags        SP
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+Login_Success
+    [Tags]    smoke
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    app123
+    ...    vc123
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+Logout_Success
+    [Tags]    smoke
+    ${curl}    ${apptoken}    curl_logout_SP    app123    vc123    ${1}    ${1}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail

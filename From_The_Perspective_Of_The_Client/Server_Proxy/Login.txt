@@ -1,0 +1,102 @@
+*** Settings ***
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+empty app_id and empty verification code
+    ${app_id}    set variable    ${EMPTY}
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+empty app_id and invalid verification code
+    ${app_id}    set variable    ${EMPTY}
+    ${verification_code}    set variable    invalid_vc_code
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+empty app_id and valid verification code
+    ${app_id}    set variable    ${EMPTY}
+    ${verification_code}    set variable    valid-vc_code
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+invalid app_id and empty verification code
+    ${app_id}    set variable    valid_app_id
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+invalid app_id and invalid verification code
+    ${app_id}    set variable    valid_app_id
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+invalid app_id and valid verification code
+    ${app_id}    set variable    valid_app_id
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+valid app_id and empty verification code
+    ${app_id}    set variable    valid_app_id
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+valid app_id and invalid verification code
+    ${app_id}    set variable    valid_app_id
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken
+
+valid app_id and valid verification code
+    ${app_id}    set variable    valid_app_id
+    ${verification_code}    set variable    ${EMPTY}
+    ${curl}    ${sp_url}    curl_login_SP    ${login_url}    ${1}    ${1}    ${app_id}
+    ...    ${verification_code}
+    ${output}    run    ${curl}
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${appToken}    get from dictionary    ${responsedata}    appToken

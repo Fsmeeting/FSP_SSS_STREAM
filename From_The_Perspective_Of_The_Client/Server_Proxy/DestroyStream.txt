@@ -1,0 +1,17 @@
+*** Settings ***
+Force Tags        SP
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+DestroyStream_audio_unreliable
+    [Tags]    smoke
+    ${stream}    ${sToken}    ${streampubtoken}    ${streamsubtoken}    CreateStream_audio_unreliable_Flow    app123    vc123
+    Comment    ${stream_json}    dic to json    ${stream}
+    Comment    ${sID}    get from dictionary    ${stream}    streamID
+    comment    "get ${streamID} and ${appToken} from ${stream}"
+    @{sp_address}    Get Proxies Flow    ${0}
+    @{curl}    curl_destroystream    ${1}    ${1}    ${stream}    ${sToken}    @{sp_address}
+    ${output}    run    @{curl}[1]
+    ${responsedata}    to json    ${output}
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail

@@ -1,0 +1,29 @@
+*** Settings ***
+Force Tags        Access
+Resource          ../../Resources/config.txt
+
+*** Test Cases ***
+Get_Proxies
+    [Tags]    smoke
+    ${exception_value1}    set variable    aaa
+    ${bytes_exception_value1}    encode string to bytes    ${exception_value1}    UTF-8
+    ${exception_value2}    set variable    bbb
+    ${bytes_exception_value2}    encode string to bytes    ${exception_value2}    UTF-8
+    @{exceptions}    create list    ${bytes_exception_value1}    ${bytes_exception_value2}
+    ${curl}    curl_get_proxies    ${access_address}    ${get_proxies_url}    ${exceptions}    ${0}    ${1}
+    ...    ${0}
+    ${output}    run process    ${curl}    shell=True
+    ${responsedata}    to json    ${output.stdout}
+    Comment    ${bytes}    encode string to bytes    ${output}    UTF-8
+    Comment    @{a}    Split To Lines    ${bytes}    curl -H "Content-Type: application/json;charset=UTF-8" -s -k --data '{"exceptionProxies":["aaa","bbb","ccc"],"proxyType":0,"requestType":1,"sequence":0}' https://access:8443/api/v1.0/get_proxies
+    Comment    @{b}    split to lines    ${output}
+    Comment    log    @{b}[4]
+    Comment    ${responsedata}    to json    @{b}[4]
+    Comment    ${str}    get from dictionary    ${responsedata}    errorCode
+    ${errorCode}    get from dictionary    ${responsedata}    errorCode
+    run keyword if    ${errorCode}!=0    fail
+    ${proxies}    get from dictionary    ${responsedata}    proxies
+    log    ${proxies[0]}
+    ${sp_ip}    get from dictionary    ${proxies[1]}    addr
+    ${sp_port}    get from dictionary    ${proxies[1]}    port
+    ${sp_addr}    set variable    https://${sp_ip}${:}${sp_port}
